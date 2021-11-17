@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <h1>List will show in here</h1>
+    <div id="list_item">
+
+    </div>
+
+    <script type="text/javascript">
+      buildList()
+
+      function buildList(){
+        var wrapper = document.getElementById('list_item')
+        var url = 'http://127.0.0.1:8000/'
+
+        fetch(url)
+        .then((resp) => resp.json())
+        .then(function(data){
+          console.log('Data:', data)
+
+          var list = data
+          for (var i in list){
+            try{
+              document.getElementById(`data-row-$[i]`).remove()
+            }catch(err){
+
+            }
+
+
+            var title = `<span class="title">${list[i].title}</span>`
+		        if (list[i].completed == true){
+              title = `<strike class="title">${list[i].title}</strike>`
+            }
+
+            var item = `
+						<div id="data-row-${i}" class="task-wrapper flex-wrapper">
+							<div style="flex:7">
+								${title}
+							</div>
+						</div>
+					`
+					   wrapper.innerHTML += item
+
+          }
+        })
+      }
+    </script>
+  </body>
+</html>
